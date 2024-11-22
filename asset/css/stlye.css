@@ -1,0 +1,305 @@
+/*table of content*/
+
+/* 
+1. section setting
+2. section carousel
+3. Section Blog
+*/
+
+/*
+    color tone
+    070606 - blac
+    007bff - blue
+    fdfd59 - yellow
+    ec4e20 - ส้มอิฐ
+    ffffff - white
+*/
+
+/* section setting */
+html,body{
+    height: 100%;
+}
+
+/*color nav*/
+.bg-alpha{
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#navbar{
+    padding: 25px;
+    transition: 0.5s;
+}
+
+@media(max-width:480px){
+    .navbar-brand{
+        font-size: 1rem;
+        line-height: 2rem;
+    }
+}
+
+/* section carousel */
+.carousel,
+.carousel-inner,
+.carousel-item,
+.carousel-inner .active{
+    height: 100%;
+}
+
+.carousel-img{
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel-caption{
+    top: 40%;
+}
+
+.backscreen{
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    /* คำสั่งกำหนดสีให้ข้อความใน  carousel*/
+}
+
+.border-short-bottom{
+    position: relative;
+    padding: 20px 0;
+    margin-bottom: 25px;
+}
+
+.border-short-bottom::after{
+    position: absolute;
+    content: "";
+    width: 200px;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    margin-left: -100px;
+    background: white;
+}
+
+.border-short-bottom-white{
+    position: relative;
+    padding: 20px 0;
+    margin-bottom: 25px;
+}
+
+.border-short-bottom-white::after{
+    position: absolute;
+    content: "";
+    width: 100px;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    margin-left: -50px;
+    background: rgb(15, 15, 15);
+}
+
+/* Section Blog */
+.wrapper-card-image{
+    position: relative;
+    padding-top: 56.25%; /*คือค่าขนาดรูปภาพ 16:9*/
+    overflow: hidden;
+}
+
+.wrapper-card-image img{
+    position: absolute;
+    top: 0;    
+    transition: 1s; /*เวลาเอาเมาส์ไปแตะที่รูปให้มัน smoot*/
+}
+.wrapper-card-image img:hover{
+    transform: scale(1.1);
+}
+.btn-group-cuttom button{
+    width: 100px;
+    margin-bottom: 0.5rem;
+}
+
+.blog-content{
+    padding: 50px 100px;
+    box-shadow: 0px 0px 10px #181717;
+}
+@media(max-width:768px){
+    .blog-content
+        padding: 20px 15px;
+    
+}
+@media(max-width:991px){
+    .blog-content{
+        padding: 40px 50px;
+    }
+}
+
+/*
+    color tone
+    070606 - black
+    007bff - blue
+    fdfd59 - yellow
+    ec4e20 - ส้มอิฐ
+    ffffff - white
+*/
+/* Section footer */
+.semi-footer{
+    background-color: #070606;
+    color: #ffffff;
+}
+.semi-footer a{
+    color:#ffffff;   
+    text-decoration: none; 
+}
+.semi-footer h4{
+    color:#007bff ;
+    border-bottom: 1px solid #007bff;
+    padding:10px 0;
+}
+.footer{
+    background-color:#070606 ;
+    color: #ffffff;
+    font-size: 0.9rem;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+}
+
+/* Section page-title */
+
+.page-image{
+    padding: 200px 0px 120px;
+    text-align: center;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Section timeline */
+.timeline{
+    list-style: none;
+    position: relative;
+    padding: 20px 0;
+}
+.timeline>li{
+    position:relative;
+    margin-bottom: 40px;
+}
+.timeline::before{
+    position: absolute;
+    content: "";/*ต้องมีเสมอ*/
+    width: 2px;
+    background-color: #686262; /*สีของเส้น timline*/
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1px;/*ค่าตรงนี้จะต้องครึ่งหนึ่งของค่า width*/
+}
+/*class timeline-badge ต้องอยู่ภายใต้ li*/
+li>.timeline-badge {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 3px solid #fff; /*เส้นขอบ*/
+    left: 50%;
+    margin-left: -9px;
+    border-radius: 50%;
+    background: #686262;
+    box-shadow: 0 0 0 5px #fff;
+    top: 15px;
+}
+
+li>.timeline-badge::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    width: 25px;
+    height: 2px;
+    background: #686262; /*เส้นสำหรับชี้ timeline*/
+}
+
+/*การแบ่ง timeline เป็นซ้าย ขวา*/
+li.inverted > .timeline-badge::before {
+    right: -32px;
+}
+
+
+li>.timeline-badge p {
+    width: 200px;
+    margin-top: -9px;
+    margin-left: 25px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #007bff;
+}
+
+li.inverted>.timeline-badge p {
+    float: right;
+    text-align: right;
+    margin-right: 25px;
+}
+
+li>.timeline-card{
+    position: relative;
+    width: 46%;
+    float: left;
+    text-align: right;
+    padding: 0 10px;
+}
+
+li.inverted>.timeline-card{
+    float: right;
+    text-align: left;
+}
+
+.timeline > li::after{
+    content: "";
+    clear: both;
+    display: block;
+}
+.timelin-arrow{
+    width: 100%;
+    text-align: center;
+    bottom: -70px;
+    color: #686262; /*สีลูกศร*/
+
+}
+
+/*responsive*/
+@media(max-width:768px){
+    .timeline::before,
+    .timeline-badge{
+        left: 40px !important;
+    }
+    .timeline-badge::before{
+        right: -32px !important;
+    }
+    .timeline-badge p,
+    li.inverted>.timeline-badge p
+    {
+        margin-left: 50px !important;
+        text-align: left;
+        float: left;
+    }
+    li>.timeline-card{
+        width: 100%;
+        text-align: left;
+        padding: 37px 0 0 85px;
+    }
+    .timelin-arrow{
+        text-align: left;
+        left: 32px;
+        
+    }
+}
+
+/*Section star-rating ☆★*/
+.star-rating{
+    position: relative;
+    font-size: 2em;
+    color: gold;
+    display: inline-block;
+}
+.star-current{
+    position: absolute;
+    top: 0;
+    white-space: nowrap;/*ไม่ให้ขึ้นบรรทัดใหม่*/
+    overflow: hidden;
+}
