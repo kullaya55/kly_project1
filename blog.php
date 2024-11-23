@@ -1,19 +1,44 @@
 <?php
   require_once('connect.php');
+  //ตรงนี้จะให้รู้ว่าเรากำลังอยู่หน้าเว็บไซต์ใน tag อะไร
+  // if(isset($_GET['tag'])){ //ให้เช็คว่า มีค่าของ tag จริงไหม
+  //   $tag = $_GET['tag'];
+  // }
+  // else{
+  //   $tag = 'all';
+  // }
+  //เขียนแบบย่อ shot if การเขียนแบบลดรูป
+  $tag = isset($_GET['tag']) ? $_GET['tag'] : 'all';
+  // ตัวแปร tag เกิดขึ้นหรือยัง ?(ถ้า)ตัวเปรเกิดขึ้นแล้วให้กำหนดข้อมูลไป คือ $_GET['tag'] ถ้าไม่ได้กำหนดให้แสดง all
 
-  $sql = "SELECT * FROM article";
-  $result = $conn->query($sql) or die($conn->connect_error);
 
+  $sql = "SELECT * FROM `article` WHERE `tag` LIKE '%".$tag."%' AND `status` = 'true'";
+  $result = $conn->query($sql) ;
+  if(!$result){
+    header( "Location: blog.php" );
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ให้เปลี่ยน title ไปตามหััวข้อ page -->
     <title>Blog - Kullaya</title>
+    <!-- COMMOn TAGS -->
+
+    <!-- Search Engine -->
+    <meta name="description" content="การสอนเกี่ยวกับการสร้างเว็บไซต์">
+    <meta name="keywords" content="html, css, php, sql">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Css link -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="asset/css/stlye.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+    <link rel="stylesheet" href="node_modules/owl.carousel/dist/assets/owl.theme.default.css">
 </head>
 <body>
     <!-- Section Navbar -->
@@ -36,18 +61,31 @@
         <div class="row pb-4">
             <div class="col-12 text-center">
                 <div class="btn-group-cuttom ">
+                  <a href="blog.php?tag=all">
                     <button class="btn btn-primary">ทั้งหมด</button>
+                  </a>
+                  <a href="blog.php?tag=html">
                     <button class="btn btn-primary">HTML</button>
+                  </a>
+                  <a href="blog.php?tag=css">
                     <button class="btn btn-primary">CSS</button>
+                  </a>
+                  <a href="blog.php?tag=javascript">
                     <button class="btn btn-primary">JavaScript</button>
+                  </a>
+                  <a href="blog.php?tag=php">
                     <button class="btn btn-primary">PHP</button>
+                  </a>
+                  <a href="blog.php?tag=mysql">
                     <button class="btn btn-primary">MySql</button>
+                  </a>
                 </div>
             </div>
         </div>
         <div class="row ">
           <?php
-            while($row = $result->fetch_assoc()){
+            if($result->num_rows){
+              while($row = $result->fetch_assoc()){
           ?>
           <section class="col-12 col-sm-6 col-md-4 p-2">
             <div class="card h-100">
@@ -66,8 +104,13 @@
             </div>
           </section>   
           <?php
-            }
+              }
+            }else{
           ?>
+          <section class="col-12">
+            <p class="text-center">ไม่มีข้อมูล</p>
+          </section>
+          <?php } ?>
         </div>
      </section>
     <!-- Section Blog -->

@@ -1,4 +1,9 @@
-<!-- <!DOCTYPE html> -->
+<?php
+  require_once('connect.php');
+  $sql = "SELECT * FROM `article` WHERE `status` = 'true' LIMIT 6"; //กำหนดให้ดึงข้อมูลมาแค่ 6 บทความ
+  $result = $conn->query($sql) ;
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -89,91 +94,26 @@
      <section class="container">
       <h1 class="border-short-bottom-white text-center">Blog Kullaya</h1>
       <div class="row">
+        <?php  
+          while($row = $result->fetch_assoc()){ 
+        ?>
         <section class="col-12 col-sm-6 col-md-4 p-2">
           <div class="card h-100">
-            <a href="" class="wrapper-card-image">
-              <img src="asset/images/img-1.jpg" class="card-img-top" alt="...">
+            <a href="blog-detail.php?id_article=<?php echo $row['id_article']?>" class="wrapper-card-image">
+              <img src="<?php echo $row['image']?>" class="card-img-top" alt="...">
             </a>
             <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+              <h5 class="card-title"><?php echo $row['subject']?></h5>
+              <p class="card-text"><?php echo $row['sub_title']?></p>
             </div>
             <div class="p-3">
-              <a href="#" class="btn btn-primary w-100">Go somewhere</a>
+              <a class="btn btn-primary w-100" href="blog-detail.php?id_article=<?php echo $row['id_article'];?>">
+                อ่านเพิ่มเติม
+              </a>
             </div>
           </div>
-        </section>
-        <section class="col-12 col-sm-6 col-md-4 p-2">
-          <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
-          <div class="card h-100">
-            <a href="" class="wrapper-card-image">
-              <img src="asset/images/img-2.jpg" class="card-img-top" alt="...">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="p-3">
-              <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-12 col-sm-6 col-md-4 p-2">
-          <div class="card h-100">
-            <a href="" class="wrapper-card-image">
-              <img src="asset/images/img-3.jpg" class="card-img-top" alt="...">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="p-3">
-              <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-12 col-sm-6 col-md-4 p-2">
-          <div class="card h-100">
-            <a href="" class="wrapper-card-image">
-              <img src="asset/images/img-4.jpg" class="card-img-top" alt="...">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="p-3">
-              <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-12 col-sm-6 col-md-4 p-2">
-          <div class="card h-100">
-            <a href="" class="wrapper-card-image">
-              <img src="asset/images/img-5.jpg" class="card-img-top" alt="...">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="p-3">
-              <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-            </div>
-          </div>
-        </section>
-        <section class="col-12 col-sm-6 col-md-4 p-2">
-          <div class="card h-100">
-            <a href="" class="wrapper-card-image">
-              <img src="asset/images/img-6.jpg" class="card-img-top" alt="...">
-            </a>
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <div class="p-3">
-              <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-            </div>
-          </div>
-        </section>
+        </section> 
+        <?php } ?>
         
       </div>
      </section>

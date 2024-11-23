@@ -1,20 +1,31 @@
 <?php
   require_once('connect.php');
-  $sql ="SELECT * FROM article WHERE id_article='".$_GET['id_article']."'";
+  $sql ="SELECT * FROM article WHERE id_article='".$_GET['id_article']."' AND `status` = 'true'";
   $result = $conn->query($sql) or die($conn->error);
 
   if($result->num_rows >0){
     $row = $result->fetch_assoc();
   }else{
     echo "ไม่มีข้อมูล";
+    header( "Location: blog.php" );
   }
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Detail</title>
+    <!-- ให้เปลี่ยน title ไปตามหััวข้อ page -->
+    <title><?php echo $row['subject'];?></title>
+    <!-- COMMOn TAGS -->
+
+    <!-- Search Engine -->
+    <meta name="description" content="<?php echo $row['sub_title'];?>">
+    <meta name="keywords" content="html, css, php, sql">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Css link -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="asset/css/stlye.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
@@ -45,7 +56,11 @@
             </div>
             <div class="col-12">
               <hr>
-              <p class="text-end text-muted">1 พฤศจิกายน 2567</p>
+              <p class="text-end text-muted">
+                <?php
+                  echo date_format(new DateTime($row['updated_at']),"j F Y");
+                ?>
+              </p>
             </div>
             <div class="col-12">
               <div class="owl-carousel owl-theme">
