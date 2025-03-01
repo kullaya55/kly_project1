@@ -1,6 +1,7 @@
 <?php
-  require_once('connect.php');
-  $sql = "SELECT * FROM `article` WHERE `status` = 'true' LIMIT 6"; //กำหนดให้ดึงข้อมูลมาแค่ 6 บทความ
+  require_once('php/connect.php');
+  $sql = "SELECT * FROM `article` WHERE `status` = 'true' ORDER BY `id_article` DESC LIMIT 6"; //กำหนดให้ดึงข้อมูลมาแค่ 6 บทความ
+  // $sql = "SELECT * FROM `article` WHERE `status` = 'true' ORDER BY RAND() LIMIT 6";
   $result = $conn->query($sql) ;
 ?>
 <!DOCTYPE html>
@@ -100,7 +101,7 @@
         <section class="col-12 col-sm-6 col-md-4 p-2">
           <div class="card h-100">
             <a href="blog-detail.php?id_article=<?php echo $row['id_article']?>" class="wrapper-card-image">
-              <img src="<?php echo $row['image']?>" class="card-img-top" alt="...">
+              <img src="<?php echo $base_path_blog .$row['image']?>" class="card-img-top" alt="...">
             </a>
             <div class="card-body">
               <h5 class="card-title"><?php echo $row['subject']?></h5>

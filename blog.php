@@ -1,5 +1,5 @@
 <?php
-  require_once('connect.php');
+  require_once('php/connect.php');
   //ตรงนี้จะให้รู้ว่าเรากำลังอยู่หน้าเว็บไซต์ใน tag อะไร
   // if(isset($_GET['tag'])){ //ให้เช็คว่า มีค่าของ tag จริงไหม
   //   $tag = $_GET['tag'];
@@ -18,7 +18,6 @@
     header( "Location: blog.php" );
   }
 ?>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -60,7 +59,7 @@
      <section class="container py-5">
         <div class="row pb-4">
             <div class="col-12 text-center">
-                <div class="btn-group-cuttom ">
+                <div class="btn-group-cuttom">
                   <a href="blog.php?tag=all">
                     <button class="btn btn-primary">ทั้งหมด</button>
                   </a>
@@ -90,7 +89,7 @@
           <section class="col-12 col-sm-6 col-md-4 p-2">
             <div class="card h-100">
               <a href="blog-detail.php?id_article=<?php echo $row['id_article']?>" class="wrapper-card-image">
-                <img src="<?php echo $row['image']?>" class="card-img-top" alt="...">
+                <img class="card-img-top" src="<?php echo $base_path_blog.$row['image']?>" alt="Coding">
               </a>
               <div class="card-body">
                 <h5 class="card-title"><?php echo $row['subject']?></h5>

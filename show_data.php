@@ -1,5 +1,5 @@
 <?php
-    require_once('connect.php');
+    require_once('php/connect.php');
     $sql = "SELECT * FROM article";
     $result = $conn->query($sql) or die($conn->connect_error);
 

@@ -69,24 +69,24 @@
                         <h5 class="card-title">
                             แบบฟอร์มติดต่อเรา
                         </h5>
-                        <form>
+                        <form method="post" action="php/contact.php">
                             <div class="row g-3">
                                 <div class="form-group col-md-4">
                                     <label for="name">ชื่อ</label>
-                                  <input type="text" id="name" class="form-control" placeholder="ชื่อของคุณ" aria-label="First name">
+                                  <input type="text" id="name" name="name" class="form-control" required placeholder="กรุณากรอกชื่อ" aria-label="First name">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="phone">เบอร์โทรศัพท์</label>
-                                  <input type="text" id="phone" class="form-control" placeholder="เบอร์โทรศัพท์ของคุณ" aria-label="Last name">
+                                  <input type="text" id="phone" name="phone" class="form-control" required placeholder="กรุณากรอกเบอร์โทรศัพท์" aria-label="Last name">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="email">อีเมล์ของคุณ</label>
-                                  <input type="text" id="email" class="form-control" placeholder="อีเมล์ของคุณ" aria-label="Last name">
+                                    <label for="email">อีเมล์</label>
+                                  <input type="email" id="email" name="email" class="form-control" required placeholder="กรุณากรอกอีเมล์" aria-label="Last name">
                                 </div>
                               </div>
                               <div class="form-group">
-                                <label for="message">ข้อความของคุณ</label>
-                                <textarea id="message" rows="5" class="form-control" placeholder="เขียนข้อความของคุณที่นี่"></textarea>
+                                <label for="detail">ข้อความของคุณ</label>
+                                <textarea id="detail" name="detail" rows="5" class="form-control" required placeholder="เขียนข้อความของคุณที่นี่"></textarea>
                               </div>
                               <button class="btn btn-primary d-block mx-auto mt-2" type="submit">
                                 ส่งข้อความ

@@ -1,14 +1,22 @@
 <?php
-  require_once('connect.php');
+  require_once('php/connect.php');
   $sql ="SELECT * FROM article WHERE id_article='".$_GET['id_article']."' AND `status` = 'true'";
   $result = $conn->query($sql) or die($conn->error);
 
   if($result->num_rows >0){
     $row = $result->fetch_assoc();
   }else{
-    echo "ไม่มีข้อมูล";
     header( "Location: blog.php" );
   }
+
+  $sql_RAND = "SELECT * FROM `article` WHERE `status` = 'true' ORDER BY RAND() LIMIT 6";
+  $result_RAND = $conn->query($sql_RAND) or die($conn->error) ;
+
+  // if($result_RAND->num_rows>0){
+  //   $row_RAND = $result_RAND->fetch_assoc();
+  // }
+
+  // echo '<pre>',print_r($row_RAND),'</pre>';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +46,7 @@
     <!-- End Section Navbar -->
     
     <!-- section page-title -->
-    <header class="jarallax " data-jarallax='{"speed":0.6}'  style="background-image: url(<?php echo $row['image']?>);">
+    <header class="jarallax " data-jarallax='{"speed":0.6}'  style="background-image: url(<?php echo $base_path_blog.$row['image']?>);">
         <div class="page-image">
             <h1 class="display-4 fw-bold"><?php echo $row['subject'];?></h1>
             <p><?php echo $row['sub_title'];?></p>
@@ -64,86 +72,25 @@
             </div>
             <div class="col-12">
               <div class="owl-carousel owl-theme">
-                <section class="col-12 p2">
+                <?php
+                  while($row_RAND = $result_RAND->fetch_assoc()){
+                ?>
+                <section class="col-12">
                   <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
                   <div class="card h-100">
-                    <a href="" class="wrapper-card-image">
-                      <img src="asset/images/img-2.jpg" class="card-img-top" alt="...">
+                    <a href="blog-detail.php?id_article=<?php echo $row_RAND['id_article'];?>" class="wrapper-card-image">
+                      <img src="<?php echo $base_path_blog .$row_RAND['image'];?>" class="card-img-top" alt="Coding">
                     </a>
                     <div class="card-body" style="height:150px;overflow: hidden;">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <h5 class="card-title"><?php echo $row_RAND['subject'];?></h5>
+                      <p class="card-text"><?php echo $row_RAND['sub_title'];?></p>
                     </div>
                     <div class="p-3">
-                      <a href="#" class="btn btn-primary w-100">Go somewhere</a>
+                      <a class="btn btn-primary w-100" href="blog-detail.php?id_article=<?php echo $row_RAND['id_article'];?>?>">อ่านเพิ่มเติม</a>
                     </div>
                   </div>
                 </section>
-
-                <section class="col-12 p2">
-                  <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
-                  <div class="card h-100">
-                    <a href="" class="wrapper-card-image">
-                      <img src="asset/images/img-2.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body" style="height:150px;overflow: hidden;">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <div class="p-3">
-                      <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="col-12 p2">
-                  <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
-                  <div class="card h-100">
-                    <a href="" class="wrapper-card-image">
-                      <img src="asset/images/img-2.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body" style="height:150px;overflow: hidden;">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam perspiciatis vitae reiciendis dolorem voluptates. Nostrum, optio repellat iusto veritatis est voluptas accusamus, dolor rem molestiae a consectetur doloribus qui id.
-                      Sapiente commodi repellendus, quas culpa vel nisi animi repudiandae harum quo recusandae! Modi esse veritatis repudiandae nam iure sint voluptatibus ab expedita, fugit beatae non possimus delectus quibusdam. Quo, officia.Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <div class="p-3">
-                      <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="col-12 p2">
-                  <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
-                  <div class="card h-100">
-                    <a href="" class="wrapper-card-image">
-                      <img src="asset/images/img-2.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body" style="height:150px;overflow: hidden;">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example Lorem ipsum dolor, sit amet consectetur adipisicing elit. In sunt numquam, ratione libero fugiat hic id nam aperiam nobis earum eveniet sapiente cum obcaecati at vero optio quam, aspernatur perferendis.text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <div class="p-3">
-                      <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-                    </div>
-                  </div>
-                </section>
-
-                <section class="col-12 p2">
-                  <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
-                  <div class="card h-100">
-                    <a href="" class="wrapper-card-image">
-                      <img src="asset/images/img-2.jpg" class="card-img-top" alt="...">
-                    </a>
-                    <div class="card-body" style="height:150px;overflow: hidden;">
-                      <h5 class="card-title">Card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                    <div class="p-3">
-                      <a href="#" class="btn btn-primary w-100">Go somewhere</a>
-                    </div>
-                  </div>
-                </section>
+                <?php } ?>
               </div>
             </div>
         </div>
@@ -198,8 +145,8 @@
           <a href="http://www.facebook.com" target="_blank">
             <i class="fa-brands fa-square-facebook fa-2x"></i>
           </a>
-          <a href="http:www.youtube.com target="_blank"">
-            <i class="fa-brands fa-youtube fa-2x""></i>
+          <a href="http:www.youtube.com" target="_blank">
+            <i class="fa-brands fa-youtube fa-2x"></i>
           </a>
         </div>
         <div class="col-md-4">
@@ -240,10 +187,37 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script src="node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="node_modules/jarallax/dist/jarallax.min.js""></script>
+    <script src="node_modules/jarallax/dist/jarallax.min.js"></script>
     <script src="asset/js/main.js"></script>
 
     <script type="text/javascript">
+    $(document).ready(function () {
+        $('.owl-carousel').owlCarousel({
+            loop: true,          // เลื่อนไม่มีที่สิ้นสุด
+            margin: 10,          // ระยะห่างระหว่าง item
+            nav: false,           // แสดงปุ่มลูกศร
+            dots: true,          // แสดงจุดด้านล่าง
+            autoplay: true,      // ให้เลื่อนอัตโนมัติ
+            autoplayTimeout: 3000, // ระยะเวลาต่อรอบ (3 วินาที)
+            responsive: {
+                0: {              // หน้าจอเล็กสุด
+                    items: 1
+                },
+                600: {            // หน้าจอ 600px ขึ้นไป
+                    items: 2
+                },
+                800: {            // หน้าจอ 800px ขึ้นไป
+                    items: 2
+                },
+                1000: {           // หน้าจอ 1000px ขึ้นไป
+                    items: 3
+                }
+            }
+        });
+    });
+</script>
+
+    <!-- <script type="text/javascript">
         $(document).ready(function () {
             $(".owl-carousel").owlCarousel();
         });
@@ -267,7 +241,7 @@
                 }
             }
         })
-    </script>
+    </script> -->
 
     
 </body>

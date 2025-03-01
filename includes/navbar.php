@@ -1,7 +1,7 @@
 <?php  
   $file_name = basename($_SERVER['SCRIPT_FILENAME'],".php");
 ?>
-<nav id="navbar" class="navbar navbar-expand-lg bg-alpha border-bottom border-body fixed-top " data-bs-theme="dark"">
+<nav id="navbar" class="navbar navbar-expand-lg bg-alpha border-bottom border-body fixed-top " data-bs-theme="dark">
       <div class="container">
           <a class="navbar-brand" href="index.php">
               <img src="asset/images/logo-wb.svg" alt="Bootstrap" width="30" height="24">
