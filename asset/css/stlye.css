@@ -4,6 +4,7 @@
 1. section setting
 2. section carousel
 3. Section Blog
+4. section reCapcha
 */
 
 /*
@@ -293,6 +294,14 @@ li.inverted>.timeline-card{
         left: 32px;
         
     }
+}
+
+/* 4. section reCapcha */
+#recaptcha-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
 }
 
 /*Section star-rating ☆★*/

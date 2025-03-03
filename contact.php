@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="asset/css/stlye.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+
 </head>
 <body>
     <!-- Section Navbar -->
@@ -81,14 +82,21 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="email">อีเมล์</label>
-                                  <input type="email" id="email" name="email" class="form-control" required placeholder="กรุณากรอกอีเมล์" aria-label="Last name">
+                                  <input type="email" id="email" name="email" class="form-control" required placeholder="example@gmail.com" aria-label="Last name">
                                 </div>
                               </div>
                               <div class="form-group">
                                 <label for="detail">ข้อความของคุณ</label>
                                 <textarea id="detail" name="detail" rows="5" class="form-control" required placeholder="เขียนข้อความของคุณที่นี่"></textarea>
                               </div>
-                              <button class="btn btn-primary d-block mx-auto mt-2" type="submit">
+                            <!--Start recaptcha-->
+                              <div id="recaptcha-wrapper" class="d-flex justify-content-center my-3">
+                                  <div class="g-recaptcha" data-sitekey="6LdrvOcqAAAAAPasAwpSq3bX3S7Wf5STbImDTMeO"
+                                  data-callback="recaptchaCallback">
+                                </div>
+                              </div>
+                            <!--End recaptcha-->
+                              <button id="btn-submit" name="btn-submit" type="submit" class="btn btn-primary d-block mx-auto mt-2" disabled>
                                 ส่งข้อความ
                               </button>
                         </form>
@@ -147,8 +155,8 @@
           <a href="http://www.facebook.com" target="_blank">
             <i class="fa-brands fa-square-facebook fa-2x"></i>
           </a>
-          <a href="http:www.youtube.com target="_blank"">
-            <i class="fa-brands fa-youtube fa-2x""></i>
+          <a href="http:www.youtube.com" target="_blank">
+            <i class="fa-brands fa-youtube fa-2x"></i>
           </a>
         </div>
         <div class="col-md-4">
@@ -179,11 +187,44 @@
       <span>COPYRIGHT &copy; 2024 | <a href="">kullaya admin</a> All Right Reserved</span>
      </footer>
     <!-- End Section footer -->
-
-
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="node_modules/jarallax/dist/jarallax.min.js""></script>
+    <script src="node_modules/jarallax/dist/jarallax.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        $(document).ready(function() {
+          resizeCaptcha();
+
+          $(window).on('resize', function() {
+              resizeCaptcha();
+          });
+
+          function resizeCaptcha() {
+              const captchaWidth = 304;
+              const captchaHeight = 78;
+              const wrapperWidth = $('#recaptcha-wrapper').width();
+              const scale = wrapperWidth < captchaWidth ? wrapperWidth / captchaWidth : 1;
+
+              $('.g-recaptcha').css({
+                  'transform': 'scale(' + scale + ')',
+                  'transform-origin': '0 0'
+              });
+
+              $('#recaptcha-wrapper').height(captchaHeight * scale);
+          }
+      });
+
+      function recaptchaCallback() {
+        $('#btn-submit').prop('disabled', false);
+    }
+      grecaptcha.reset();  // ถ้าอยาก reset ตอนส่งฟอร์มเสร็จ
+      $('#btn-submit').prop('disabled', true);  // ปิดปุ่มใหม่
+
+    </script>
+
+
+
 </body>
 </html>
