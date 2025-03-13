@@ -1,4 +1,27 @@
-<?php include_once('../authen.php') ?>
+<?php 
+  include_once('../authen.php');
+  $sql = "SELECT * FROM article";
+  $result = $conn->query($sql);
+  if (!$result) {
+      die("Query failed: " . $conn->error);
+}
+
+  // function วันที่ไทย
+  function formatThaiDate($dateStr) {
+    $thaiMonths = [
+        1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
+        5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
+        9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม'
+    ];
+
+    $date = new DateTime($dateStr);
+    $year = $date->format('Y') + 543; // แปลง ค.ศ. เป็น พ.ศ.
+    $month = $thaiMonths[(int)$date->format('m')];
+    $day = $date->format('j');
+
+    return "{$day} {$month} {$year}";
+  }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,12 +64,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Articles Management</h1>
+            <h1>จัดการข้อมูลกิจกรรม</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../dashboard">Dashboard</a></li>
-              <li class="breadcrumb-item active">Articles Management</li>
+              <li class="breadcrumb-item active">จัดการข้อมูลกิจกรรม</li>
             </ol>
           </div>
         </div>
@@ -60,39 +83,42 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title d-inline-block">Contents List</h3>
-          <a href="form-create.php" class="btn btn-primary float-right ">Add Articles +</a href="">
+          <a href="form-create.php" class="btn btn-primary float-right "> เพิ่มกิจกรรม + </a>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <table id="dataTable" class="table table-bordered table-striped">
             <thead>
             <tr>
-              <th>No.</th>
-              <th>Image</th>
-              <th>Subject</th>
-              <th>Subtitle</th>
-              <th>Created</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th>ลำดับ</th>
+              <th>รูปภาพ</th>
+              <th>หัวข้อ</th>
+              <th>หัวข้อย่อย</th>
+              <th>วันที่</th>
+              <th>จัดการข้อมูล</th>
             </tr>
             </thead>
             <tbody>
-            <?php for($id=1; $id <= 5; $id++) { ?>
+            <?php 
+              $num = 0;
+              while($row = $result->fetch_assoc()) { 
+              $num++;
+            ?>
               <tr>
-                <td><?php echo $id; ?></td>
-                <td><img class="img-fluid d-block mx-auto" src="https://images.unsplash.com/photo-1531026383433-6ed5a112afbc?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c010c700aac502636ad0b579ce1274a4&auto=format&fit=crop&w=1350&q=80" width="150px" alt=""></td>
-                <td>Subject<?php echo $id; ?></td>
-                <td>Subtitle<?php echo $id; ?></td>
-                <td>1/12/2018</td>
+                <td><?php echo $num;  ?></td>
+                <td><img class="img-fluid d-block mx-auto" src="../../../asset/images/blog/<?php echo $row['image']; ?>" width="150px" alt=""></td>
+                <td><?php echo $row['subject']; ?></td>
+                <td><?php echo $row['sub_title']; ?></td>
                 <td>
-                  <a href="form-edit.php?id=<?php echo $id; ?>" class="btn btn-sm btn-warning text-white">
-                    <i class="fas fa-edit"></i> edit
-                  </a> 
+                  <?php echo formatThaiDate($row['updated_at']) . ' ' . date('| H:i:s', strtotime($row['updated_at'])); ?>
                 </td>
                 <td>
-                  <a href="#" onclick="deleteItem(<?php echo $id; ?>);" class="btn btn-sm btn-danger">
-                    <i class="fas fa-trash-alt"></i> Delete
-                  </a>
+                  <a href="form-edit.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning text-white">
+                    <i class="fas fa-edit"></i> แก้ไข
+                  </a> 
+                    <a href="#" onclick="deleteItem(<?php echo $row['id']; ?>);" class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash-alt"></i> ลบ
+                    </a>
                 </td>
               </tr>
             <?php } ?>
@@ -142,12 +168,11 @@
     });
   });
 
-  function deleteItem (id) { 
-    if( confirm('Are you sure, you want to delete this item?') == true){
-      window.location=`delete.php?id=${id}`;
-      // window.location='delete.php?id='+id;
+  function deleteItem(id) {
+        if (confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) {
+            window.location = 'delete.php?id=' + id;
+        }
     }
-  };
 
 </script>
 

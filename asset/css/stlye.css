@@ -5,6 +5,7 @@
 2. section carousel
 3. Section Blog
 4. section reCapcha
+5. section employee
 */
 
 /*
@@ -23,7 +24,8 @@ html,body{
 
 /*color nav*/
 .bg-alpha{
-    background: rgba(0, 0, 0, 0.5);
+    background-color:rgba(0, 0, 0,0.7);
+    /* background: rgba(0, 0, 0, 0.5);#1083ff */
 }
 
 #navbar{
@@ -58,7 +60,7 @@ html,body{
 }
 
 .backscreen{
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(36, 35, 35, 0.3);
     height: 100%;
     /* คำสั่งกำหนดสีให้ข้อความใน  carousel*/
 }
@@ -112,24 +114,56 @@ html,body{
 .wrapper-card-image img:hover{
     transform: scale(1.1);
 }
-.btn-group-cuttom button{
-    width: 100px;
-    margin-bottom: 0.5rem;
-}
 
 .btn-group-cuttom a:hover{
     text-decoration: none;
 }
 
+.btn-group-cuttom {
+    display: flex;
+    gap: 0; /* ถ้าใช้ flex แล้วเกิดเส้น ให้เช็ก gap ด้วย */
+}
 
+.btn-group-cuttom a {
+    text-decoration: none; /* กันเส้นขีดล่างจาก a */
+}
+
+.btn-group-cuttom button {
+    width: 100px;
+    margin-bottom: 0.5rem;
+    border: none;
+    outline: none;
+    box-shadow: none; /* ถ้าไม่ต้องการเงา */
+    margin: 0; /* เอาช่องว่างระหว่างปุ่มออก */
+    padding: 10px 20px; /* ปรับตามความเหมาะสม */
+    background-color: #007bff; /* สีพื้นหลัง */
+    color: white; /* สีข้อความ */
+    cursor: pointer;
+}
+
+.btn-group-cuttom button:hover {
+    background-color: #0056b3; /* สีตอน hover */
+}
+
+.no-background {
+    background-color: transparent;
+    border: none;  /* ลบขอบของปุ่ม */
+    color: #007bff;  /* เปลี่ยนสีข้อความของปุ่ม ถ้าต้องการ */
+    box-shadow: none;  /* ลบเงาปุ่ม */
+  }
+
+.bg-section2{
+    background-color: #007bff;
+}
 .blog-content{
     padding: 50px 100px;
     box-shadow: 0px 0px 10px #181717;
 }
 @media(max-width:768px){
-    .blog-content
+    .blog-content{        
         padding: 20px 15px;
     
+}
 }
 @media(max-width:991px){
     .blog-content{
@@ -177,125 +211,6 @@ html,body{
     background: rgba(0, 0, 0, 0.5);
 }
 
-/* Section timeline */
-.timeline{
-    list-style: none;
-    position: relative;
-    padding: 20px 0;
-}
-.timeline>li{
-    position:relative;
-    margin-bottom: 40px;
-}
-.timeline::before{
-    position: absolute;
-    content: "";/*ต้องมีเสมอ*/
-    width: 2px;
-    background-color: #686262; /*สีของเส้น timline*/
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -1px;/*ค่าตรงนี้จะต้องครึ่งหนึ่งของค่า width*/
-}
-/*class timeline-badge ต้องอยู่ภายใต้ li*/
-li>.timeline-badge {
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    border: 3px solid #fff; /*เส้นขอบ*/
-    left: 50%;
-    margin-left: -9px;
-    border-radius: 50%;
-    background: #686262;
-    box-shadow: 0 0 0 5px #fff;
-    top: 15px;
-}
-
-li>.timeline-badge::before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    right: 20px;
-    width: 25px;
-    height: 2px;
-    background: #686262; /*เส้นสำหรับชี้ timeline*/
-}
-
-/*การแบ่ง timeline เป็นซ้าย ขวา*/
-li.inverted > .timeline-badge::before {
-    right: -32px;
-}
-
-
-li>.timeline-badge p {
-    width: 200px;
-    margin-top: -9px;
-    margin-left: 25px;
-    font-size: 17px;
-    font-weight: bold;
-    color: #007bff;
-}
-
-li.inverted>.timeline-badge p {
-    float: right;
-    text-align: right;
-    margin-right: 25px;
-}
-
-li>.timeline-card{
-    position: relative;
-    width: 46%;
-    float: left;
-    text-align: right;
-    padding: 0 10px;
-}
-
-li.inverted>.timeline-card{
-    float: right;
-    text-align: left;
-}
-
-.timeline > li::after{
-    content: "";
-    clear: both;
-    display: block;
-}
-.timelin-arrow{
-    width: 100%;
-    text-align: center;
-    bottom: -70px;
-    color: #686262; /*สีลูกศร*/
-
-}
-
-/*responsive*/
-@media(max-width:768px){
-    .timeline::before,
-    .timeline-badge{
-        left: 40px !important;
-    }
-    .timeline-badge::before{
-        right: -32px !important;
-    }
-    .timeline-badge p,
-    li.inverted>.timeline-badge p
-    {
-        margin-left: 50px !important;
-        text-align: left;
-        float: left;
-    }
-    li>.timeline-card{
-        width: 100%;
-        text-align: left;
-        padding: 37px 0 0 85px;
-    }
-    .timelin-arrow{
-        text-align: left;
-        left: 32px;
-        
-    }
-}
-
 /* 4. section reCapcha */
 #recaptcha-wrapper {
     display: flex;
@@ -316,4 +231,30 @@ li.inverted>.timeline-card{
     top: 0;
     white-space: nowrap;/*ไม่ให้ขึ้นบรรทัดใหม่*/
     overflow: hidden;
+}
+
+/* 5. section employee */
+.team-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.team-card {
+    border: none;
+    background: none;
+}
+.team-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #007bff;
+    margin-bottom: 10px;
+}
+.line {
+    width: 2px;
+    height: 30px;
+    background-color: #007bff;
+    margin: 10px auto;
 }

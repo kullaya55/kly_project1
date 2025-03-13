@@ -1,22 +1,54 @@
 <?php
   require_once('php/connect.php');
-  $sql = "SELECT * FROM `article` WHERE `status` = 'true' ORDER BY `id_article` DESC LIMIT 6"; //กำหนดให้ดึงข้อมูลมาแค่ 6 บทความ
+  $sql = "SELECT * FROM `article` WHERE `status` = 'true' ORDER BY `id` DESC LIMIT 6"; //กำหนดให้ดึงข้อมูลมาแค่ 6 บทความ
   // $sql = "SELECT * FROM `article` WHERE `status` = 'true' ORDER BY RAND() LIMIT 6";
-  $result = $conn->query($sql) ;
+  $result = $conn->query($sql);
+
+  $sql_car = "SELECT * FROM `carousel` ORDER BY `id` DESC LIMIT 3"; 
+  $result_car = $conn->query($sql_car);
+
+   // กำหนด base path ของภาพ
+   $base_path_blog = 'asset/images/blog/'; // กำหนดให้เป็นเส้นทางที่เก็บรูปภาพ
+
+   $base_path_carousel = 'asset/images/carousel/'; // กำหนดให้เป็นเส้นทางที่เก็บรูปภาพ
+
+
+   function formatThaiDate($dateStr) {
+    $thaiMonths = [
+        1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
+        5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
+        9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม'
+    ];
+
+    $date = new DateTime($dateStr);
+    $year = $date->format('Y') + 543; // แปลง ค.ศ. เป็น พ.ศ.
+    $month = $thaiMonths[(int)$date->format('m')];
+    $day = $date->format('j');
+
+    return "{$day} {$month} {$year}";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kullaya-Blog Index</title>
+    <title>โรงเรียนเทศบาล 6 นครเชียงราย</title>
    <!-- favicons -->
    
     <!-- css -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="asset/css/stlye.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-    
+    <script>
+      function openUrl(url) {
+        if (url) {
+          window.open(url, '_blank');  // เปิด URL ในแท็บใหม่
+        } else {
+          alert('URL ไม่มีค่า');
+        }
+      }
+    </script>
 
 </head>
 <body>
@@ -24,51 +56,35 @@
       <?php include_once('includes/navbar.php'); ?>
     <!-- End Section Navbar -->
     
-    <!-- section Carousel -->
     <section id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <?php  
+          for ($i = 0; $i < $result_car->num_rows; $i++) {
+            echo '<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="'.$i.'" '.($i == 0 ? 'class="active"' : '').' aria-label="Slide '.($i+1).'"></button>';
+          }
+        ?>
       </div>
+
       <div class="carousel-inner">
-        <div class="carousel-item active">
-          <div class="carousel-img" style="background-image: url('https://images.unsplash.com/photo-1621857093087-7daa85ab14a6?q=80&w=1795&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+        <?php  
+          $active = true;
+          while($row_car = $result_car->fetch_assoc()){ 
+        ?>
+        <div class="carousel-item <?php echo $active ? 'active' : ''; ?>">
+          <div class="carousel-img" style="background-image: url('<?php echo $base_path_carousel . $row_car['image']; ?>');">
             <div class="carousel-caption">
-              <h1 class="display-4 fw-bold">Web Developer 1</h1>
-              <p>
-                นักเขียนเว็บไซต์ (Html Css JavaScript)
-              </p>
+              <h1 class="display-4 fw-bold"><?php echo $row_car['topic']; ?></h1>
+              <p><?php echo $row_car['detail']; ?></p>
             </div>
             <div class="backscreen"></div>
           </div>
         </div>
-
-        <div class="carousel-item">
-          <div class="carousel-img" style="background-image: url('https://plus.unsplash.com/premium_photo-1678565879444-f87c8bd9f241?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
-            <div class="carousel-caption">
-              <h1 class="display-4 fw-bold">Web Developer 2</h1>
-              <p>
-                นักเขียนเว็บไซต์ (AngularJs)
-              </p>
-            </div>
-            <div class="backscreen"></div>
-          </div>
-          
-        </div>
-        <div class="carousel-item">
-          <div class="carousel-img" style="background-image: url('https://images.unsplash.com/photo-1620825937374-87fc7d6bddc2?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
-            <div class="carousel-caption">
-              <h1 class="display-4 fw-bold">Web Developer 3</h1>
-              <p>
-                นักเขียนเว็บไซต์ (PHP MySql)
-              </p>
-            </div>
-            <div class="backscreen"></div>
-          </div>
-        </div>
-
+        <?php 
+          $active = false;
+          } 
+        ?>
       </div>
+
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -80,10 +96,40 @@
     </section>
     <!-- End section Carousel -->
 
+    <!-- Section Blog-->
+    <section class="container">
+      <h1 class="border-short-bottom-white text-center">ข่าวกิจกรรม</h1>
+      <div class="row">
+        <?php  
+          while($row = $result->fetch_assoc()){ 
+          $url = $row['url'];
+        ?>
+        <section class="col-12 col-sm-6 col-md-4 p-2">
+          <div class="card h-100">
+            <a href="blog-detail.php?id=<?php echo $row['id']?>" class="wrapper-card-image">
+              <img src="<?php echo $base_path_blog .$row['image']?>" class="card-img-top" alt="...">
+            </a>
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $row['subject']?></h5>
+              <p class="card-text"><?php echo $row['sub_title']?></p>
+              <p class="text-end text-muted">
+                <?php echo formatThaiDate($row['updated_at']); ?>
+              </p>
+            </div>
+            <div class="p-3">
+              <a class="btn btn-primary" onclick="openUrl('<?php echo $url; ?>')" >อ่านเพิ่มเติม</a>
+            </div>
+          </div>
+        </section> 
+        <?php } ?>
+      </div>
+    </section>
+    <!-- End Section Blog-->
+
   
     <!-- Section  Jumbotron-->
     <section class="container-fluid mt-3 ">
-      <div class=" p-5 bg-dark text-white rounded">
+      <div class=" p-5 bg-section2 text-white rounded">
         <h1 class="border-short-bottom text-center">อยากเขียนเว็บไซต์เก่งๆๆๆโว้ยๆ</h1> 
         <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat..</p> 
       </div>
@@ -92,35 +138,114 @@
     <!-- End Section  Jumbotron-->
 
     <!-- Section Blog-->
-     <section class="container">
-      <h1 class="border-short-bottom-white text-center">Blog Kullaya</h1>
+    <section class="container">
+      <h1 class="border-short-bottom-white text-center">ข่าวกิจกรรม</h1>
       <div class="row">
+
         <?php  
           while($row = $result->fetch_assoc()){ 
+          $url = $row['url'];
         ?>
         <section class="col-12 col-sm-6 col-md-4 p-2">
           <div class="card h-100">
-            <a href="blog-detail.php?id_article=<?php echo $row['id_article']?>" class="wrapper-card-image">
+            <a href="blog-detail.php?id=<?php echo $row['id']?>" class="wrapper-card-image">
               <img src="<?php echo $base_path_blog .$row['image']?>" class="card-img-top" alt="...">
             </a>
             <div class="card-body">
               <h5 class="card-title"><?php echo $row['subject']?></h5>
               <p class="card-text"><?php echo $row['sub_title']?></p>
+              <p class="text-end text-muted">
+                <?php 
+                  echo formatThaiDate($row['updated_at']); 
+                ?>
+              </p>
             </div>
             <div class="p-3">
-              <a class="btn btn-primary w-100" href="blog-detail.php?id_article=<?php echo $row['id_article'];?>">
+              <a class="btn btn-primary" onclick="openUrl('<?php echo $url; ?>')" >
                 อ่านเพิ่มเติม
               </a>
             </div>
           </div>
         </section> 
         <?php } ?>
-        
+
       </div>
      </section>
     <!-- End Section Blog-->
+    <!-- เปิดข่าวกิจกรรม -->
+    <section class="container">
+      <div class="p-3 text-end">
+        <a class="btn no-background" href="blog.php" target="_blank"><i class="far fa-calendar-plus"></i> ดูข่าวกิจกรรมเพิ่มเติม</a>
+      </div>
+     </section>
+    <!-- ปุิดข่าวกิจกรรม -->
 
+    <!-- ประกาศ -->
+    <section class="container">
+      <!-- Blog Posts Section -->
+      <div class="container mt-5">
+      <h1 class="border-short-bottom-white text-center">ข่าวกิจกรรม</h1>
 
+        <!-- Blog Post 1 -->
+        <div class="blog-post">
+          <h2 class="blog-post-title">ประกาศการประชุมประจำปี</h2>
+          <p class="blog-post-meta">วันที่: 9 มีนาคม 2025 โดย <a href="#">ผู้ดูแลเว็บไซต์</a></p>
+          <p class="blog-post-content">
+            ขอเชิญชวนทุกท่านเข้าร่วมการประชุมประจำปีที่จะจัดขึ้นในวันที่ 15 มีนาคม 2025 ที่สำนักงานใหญ่ของเรา...
+            <br><br>
+            ในการประชุมครั้งนี้ เราจะพูดถึงแผนงานในปีหน้าและผลการดำเนินงานในปีที่ผ่านมา...
+          </p>
+          <a href="https://www.facebook.com/share/p/165nKeQGyi/" class="btn btn-primary">อ่านเพิ่มเติม</a>
+        </div>
+        <!-- Blog Post 2 -->
+        <div class="blog-post">
+          <h2 class="blog-post-title">ประกาศเปิดรับสมัครงาน</h2>
+          <p class="blog-post-meta">วันที่: 5 มีนาคม 2025 โดย <a href="#">ฝ่ายทรัพยากรมนุษย์</a></p>
+          <p class="blog-post-content">
+            บริษัทของเรากำลังเปิดรับสมัครพนักงานในหลายตำแหน่ง เช่น ฝ่ายขาย, ฝ่ายการตลาด, และฝ่ายเทคโนโลยี...
+            <br><br>
+            หากคุณสนใจสามารถสมัครได้ที่เว็บไซต์ของเรา หรือส่งประวัติส่วนตัวมาที่อีเมล...
+          </p>
+          <a href="#" class="btn btn-primary">อ่านเพิ่มเติม</a>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="blog-post">
+          <h2 class="blog-post-title">อัปเดตระบบใหม่</h2>
+          <p class="blog-post-meta">วันที่: 1 มีนาคม 2025 โดย <a href="#">ฝ่ายไอที</a></p>
+          <p class="blog-post-content">
+            บริษัทของเราจะทำการอัปเดตระบบใหม่ในวันที่ 10 มีนาคม 2025 เพื่อเพิ่มประสิทธิภาพในการทำงาน...
+            <br><br>
+            ขอบคุณทุกท่านที่ให้ความร่วมมือในการทดสอบระบบใหม่และแจ้งข้อผิดพลาดที่พบ...
+          </p>
+          <a href="#" class="btn btn-primary">อ่านเพิ่มเติม</a>
+        </div>
+
+        
+      </div>
+    </section>
+    <!-- End ประกาศ -->
+    <!-- Section  To Do-->
+    <section class="container py-5">
+      <div class="row">
+          <div class="col-lg-6 py-3 ps-lg-0">
+          <h2>ทำความรู้จักกับเราให้ดียิ่งขึ้น</h2>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel temporibus similique accusantium sunt reiciendis impedit neque accusamus id exercitationem dolore provident illo debitis porro, molestias labore veritatis beatae dolorem quaerat?</p>
+              <br>
+              <h3>เราคาดหวังไว้ว่า...</h3>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel temporibus similique accusantium sunt reiciendis impedit neque accusamus id exercitationem dolore provident illo debitis porro, molestias labore veritatis beatae dolorem quaerat?</p>
+          </div>
+          <div class="col-lg-6">
+            <!-- การนำ video จาก youtube มาใช้งาน -->
+            <div class="ratio ratio-16x9"><!-- ratio ratio-16x9 กำหนดให้ youtube ย่อขยายตามขนาด -->
+                <iframe class="embed-responsive-item" style="max-width: 100%;height: 100%;" src="https://www.youtube.com/embed/9r1sbAmDFcM?si=IhSWVTadHbAf" frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+              
+          </div>
+      </div>
+    </section>
+    <!-- End Section  To Do-->
 
     <!-- Section footer -->
      <!-- text-md-start กำหนดให้ข้อความชิดด้านซ้ายมือในขนาดหน้าจอ md  -->
@@ -139,8 +264,8 @@
           <a href="http://www.facebook.com" target="_blank">
             <i class="fa-brands fa-square-facebook fa-2x"></i>
           </a>
-          <a href="http:www.youtube.com target="_blank"">
-            <i class="fa-brands fa-youtube fa-2x""></i>
+          <a href="http:www.youtube.com" target="_blank">
+            <i class="fa-brands fa-youtube fa-2x"></i>
           </a>
         </div>
         <div class="col-md-4">

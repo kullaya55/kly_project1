@@ -1,4 +1,13 @@
-<?php include_once('../authen.php') ?>
+<?php 
+  include_once('../authen.php'); 
+  $sql = "SELECT * FROM `admin`";
+  $result = $conn->query($sql);
+
+  if (!$result) {
+      die('Query Failed: ' . $conn->error);
+  }
+  // print_r($result);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,39 +69,45 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title d-inline-block">Admin List</h3>
-          <a href="form-create.php" class="btn btn-primary float-right ">Add Admin +</a href="">
+          <a href="form-create.php" class="btn btn-primary float-right ">Add Admin +</a>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <table id="dataTable" class="table table-bordered table-striped">
             <thead>
             <tr>
-              <th>ID.</th>
-              <th>Username</th>
-              <th>FirstName</th>
-              <th>LastName</th>
-              <th>Permission</th>
-              <th>Edit</th>
-              <th>Delete</th>
+              <th>ลำดับ</th>
+              <th>ชื่อผู้ใช้</th>
+              <th>ชื่อ</th>
+              <th>นามสกุล</th>
+              <th>สถานะผู้ใช้งาน</th>
+              <th>แก้ไขข้อมูล</th>
+              <th>ลบข้อมูล</th>
             </tr>
             </thead>
             <tbody>
-            <?php for($id=1; $id <= 5; $id++) { ?>
+            <?php 
+              $num = 0;
+              while($row = $result->fetch_assoc()) { 
+              $num++;
+            ?>
               <tr>
-                <td><?php echo $id; ?></td>
-                <td>Username<?php echo $id; ?></td>
-                <td>FirstName<?php echo $id; ?></td>
-                <td>LastName<?php echo $id; ?></td>
-                <td><span class="badge badge-primary">Admin</span></td>
+                <td><?php echo $num; ?></td>
+                <td><?php echo $row['username']; ?></td>
+                <td><?php echo $row['first_name']; ?></td>
+                <td><?php echo $row['last_name']; ?></td>
+                <td><span class="badge badge-primary"><?php echo $row['status']; ?></span></td>
                 <td>
-                  <a href="form-edit.php?id=<?php echo $id; ?>" class="btn btn-sm btn-warning text-white">
-                    <i class="fas fa-edit"></i> edit
+                  <a href="form-edit.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning text-white">
+                    <i class="fas fa-edit"></i> แก้ไข
                   </a> 
                 </td>
                 <td>
-                  <a href="#" onclick="deleteItem(<?php echo $id; ?>);" class="btn btn-sm btn-danger">
-                    <i class="fas fa-trash-alt"></i> Delete
+                  <?php if($row['id'] != 1){ ?>
+                  <a href="#" onclick="deleteItem(<?php echo $row['id']; ?>);" class="btn btn-sm btn-danger">
+                    <i class="fas fa-trash-alt"></i> ลบ
                   </a>
+                  <?php } ?>
                 </td>
               </tr>
             <?php } ?>
@@ -131,24 +146,36 @@
 <script src="../../plugins/datatables/dataTables.bootstrap4.min.js"></script>
 
 <script>
-  $(function () {
-    $('#dataTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true
+    $(function () {
+        $('#dataTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "language": {
+                "lengthMenu": "แสดง _MENU_ รายการต่อหน้า",
+                "zeroRecords": "ไม่พบข้อมูล",
+                "info": "แสดงหน้า _PAGE_ จาก _PAGES_",
+                "infoEmpty": "ไม่มีข้อมูล",
+                "infoFiltered": "(กรองจากทั้งหมด _MAX_ รายการ)",
+                "search": "ค้นหา:",
+                "paginate": {
+                    "first": "หน้าแรก",
+                    "last": "หน้าสุดท้าย",
+                    "next": "ถัดไป",
+                    "previous": "ก่อนหน้า"
+                }
+            }
+        });
     });
-  });
 
-  function deleteItem (id) { 
-    if( confirm('Are you sure, you want to delete this item?') == true){
-      window.location=`delete.php?id=${id}`;
-      // window.location='delete.php?id='+id;
+    function deleteItem(id) {
+        if (confirm('คุณต้องการลบข้อมูลนี้ใช่หรือไม่?')) {
+            window.location = 'delete.php?id=' + id;
+        }
     }
-  };
-
 </script>
 
 </body>

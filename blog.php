@@ -1,5 +1,6 @@
 <?php
   require_once('php/connect.php');
+  $base_path_blog = 'asset/images/blog/'; // กำหนดให้เป็นเส้นทางที่เก็บรูปภาพ
   //ตรงนี้จะให้รู้ว่าเรากำลังอยู่หน้าเว็บไซต์ใน tag อะไร
   // if(isset($_GET['tag'])){ //ให้เช็คว่า มีค่าของ tag จริงไหม
   //   $tag = $_GET['tag'];
@@ -11,8 +12,9 @@
   $tag = isset($_GET['tag']) ? $_GET['tag'] : 'all';
   // ตัวแปร tag เกิดขึ้นหรือยัง ?(ถ้า)ตัวเปรเกิดขึ้นแล้วให้กำหนดข้อมูลไป คือ $_GET['tag'] ถ้าไม่ได้กำหนดให้แสดง all
 
+  $tag = mysqli_real_escape_string($conn, $tag);
+  $sql = "SELECT * FROM `article` WHERE `tag` LIKE '%$tag%' AND `status` = 'true'";
 
-  $sql = "SELECT * FROM `article` WHERE `tag` LIKE '%".$tag."%' AND `status` = 'true'";
   $result = $conn->query($sql) ;
   if(!$result){
     header( "Location: blog.php" );
@@ -23,7 +25,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- ให้เปลี่ยน title ไปตามหััวข้อ page -->
-    <title>Blog - Kullaya</title>
+    <title>ข่าวกิจกรรม</title>
     <!-- COMMOn TAGS -->
 
     <!-- Search Engine -->
@@ -38,6 +40,15 @@
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
     <link rel="stylesheet" href="node_modules/owl.carousel/dist/assets/owl.theme.default.css">
+    <script>
+      function openUrl(url) {
+        if (url) {
+          window.open(url, '_blank');  // เปิด URL ในแท็บใหม่
+        } else {
+          alert('URL ไม่มีค่า');
+        }
+      }
+    </script>
 </head>
 <body>
     <!-- Section Navbar -->
@@ -59,36 +70,25 @@
      <section class="container py-5">
         <div class="row pb-4">
             <div class="col-12 text-center">
-                <div class="btn-group-cuttom">
-                  <a href="blog.php?tag=all">
-                    <button class="btn btn-primary">ทั้งหมด</button>
-                  </a>
-                  <a href="blog.php?tag=html">
-                    <button class="btn btn-primary">HTML</button>
-                  </a>
-                  <a href="blog.php?tag=css">
-                    <button class="btn btn-primary">CSS</button>
-                  </a>
-                  <a href="blog.php?tag=javascript">
-                    <button class="btn btn-primary">JavaScript</button>
-                  </a>
-                  <a href="blog.php?tag=php">
-                    <button class="btn btn-primary">PHP</button>
-                  </a>
-                  <a href="blog.php?tag=mysql">
-                    <button class="btn btn-primary">MySql</button>
-                  </a>
-                </div>
+            <div class="btn-group w-100">
+                <a href="blog.php?tag=all" class="btn btn-primary mx-2">ทั้งหมด</a>
+                <a href="blog.php?tag=html" class="btn btn-primary mx-2">HTML</a>
+                <a href="blog.php?tag=css" class="btn btn-primary mx-2">CSS</a>
+                <a href="blog.php?tag=javascript" class="btn btn-primary mx-2">JavaScript</a>
+                <a href="blog.php?tag=php" class="btn btn-primary mx-2">PHP</a>
+                <a href="blog.php?tag=mysql" class="btn btn-primary mx-2">MySql</a>
+            </div>
             </div>
         </div>
         <div class="row ">
           <?php
-            if($result->num_rows){
-              while($row = $result->fetch_assoc()){
+            if($result && $result->num_rows > 0){
+                while($row = $result->fetch_assoc()){
+                $url = $row['url'];
           ?>
           <section class="col-12 col-sm-6 col-md-4 p-2">
             <div class="card h-100">
-              <a href="blog-detail.php?id_article=<?php echo $row['id_article']?>" class="wrapper-card-image">
+              <a href="blog-detail.php?id=<?php echo $row['id']?>" class="wrapper-card-image">
                 <img class="card-img-top" src="<?php echo $base_path_blog.$row['image']?>" alt="Coding">
               </a>
               <div class="card-body">
@@ -96,7 +96,7 @@
                 <p class="card-text"><?php echo $row['sub_title']?></p>
               </div>
               <div class="p-3">
-                <a class="btn btn-primary w-100" href="blog-detail.php?id_article=<?php echo $row['id_article'];?>">
+                <a class="btn btn-primary" onclick="openUrl('<?php echo $url; ?>')" >
                   อ่านเพิ่มเติม
                 </a>
               </div>
@@ -114,35 +114,6 @@
      </section>
     <!-- Section Blog -->
 
-    <!-- Section Timeline-->
-
-    <section class="page-title jarallax position-relative py-5" data-jarallax='{"speed":0.6}'  style="background-image: url('https://plus.unsplash.com/premium_photo-1679177183775-75c2e0d0d209?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <img src="asset/images/logo-wb.svg" class="img-fluid" width="150" alt="">
-                    <h2 class="display-4 fw-bold">Timeline About Us</h2>
-                    <div class="star-rating">
-                        <span>☆</span>
-                        <span>☆</span>
-                        <span>☆</span>
-                        <span>☆</span>
-                        <span>☆</span>
-                        <div class="star-current" style="width: 50%;">
-                            <!-- style="width: 50%; คำสั่งจำนวนดาว -->
-                            <span>★</span>
-                            <span>★</span>
-                            <span>★</span>
-                            <span>★</span>
-                            <span>★</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>       
-    </section>
-    
-    <!-- End Section Timeline-->
 
     <!-- Section footer -->
      <!-- text-md-start กำหนดให้ข้อความชิดด้านซ้ายมือในขนาดหน้าจอ md  -->
@@ -161,8 +132,8 @@
           <a href="http://www.facebook.com" target="_blank">
             <i class="fa-brands fa-square-facebook fa-2x"></i>
           </a>
-          <a href="http:www.youtube.com target="_blank"">
-            <i class="fa-brands fa-youtube fa-2x""></i>
+          <a href="http:www.youtube.com" target="_blank">
+            <i class="fa-brands fa-youtube fa-2x"></i>
           </a>
         </div>
         <div class="col-md-4">

@@ -1,12 +1,58 @@
-<?php 
-  session_start();
-  if (isset($_POST['submit'])) {
-    $_SESSION['authen_id'] = 1; 
-    header('Location: pages/dashboard');
-  }
+<?php
+session_start();
+require_once('../php/connect.php');
 
+// ตั้งค่า timezone ทันที
+date_default_timezone_set('Asia/Bangkok');
 
+if (isset($_POST['submit'])) {
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
+
+    $stmt = $conn->prepare("SELECT * FROM `admin` WHERE `username` = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    if (!empty($row)) {
+        if (password_verify($password, $row['password'])) {
+            $_SESSION['authen_id'] = $row['id'];
+            $_SESSION['authen_username'] = $row['username'];
+            $_SESSION['authen_name'] = $row['first_name'] . ' ' . $row['last_name'];
+            $_SESSION['authen_last_login'] = $row['last_login'];
+
+            // ตั้งค่า session สถานะให้ตรงกับฐานข้อมูล
+            $_SESSION['authen_status'] = strtolower($row['status']); // กรณีต้องการให้เช็คแบบไม่สนตัวพิมพ์เล็ก-ใหญ่
+
+            // อัปเดต last_login
+            $update = "UPDATE `admin` 
+                      SET `last_login` = '".date("Y-m-d H:i:s")."' 
+                      WHERE `id` = '".$row['id']."' ";
+
+            $result_update = $conn->query($update);
+
+            if($result_update){
+                // Debug ตรวจสอบค่า session ได้เลยถ้าอยากชัวร์
+                // print_r($_SESSION); exit();
+
+                header('Location: pages/dashboard');
+                exit();
+            } else {
+                echo '<script>alert("เกิดข้อผิดพลาด");</script>';
+            }
+        } else {
+            echo '<script>alert("รหัสผ่านไม่ถูกต้อง");</script>';
+        }
+    } else {
+        echo '<script>alert("ไม่พบข้อมูลผู้ใช้");</script>';
+    }
+
+    $stmt->close();
+}
 ?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,13 +97,13 @@
             <div class="input-group-prepend">
                 <span class="input-group-text"><i class="fas fa-user"></i></span>
             </div>
-            <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+            <input type="text" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" required>
         </div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
                 <span class="input-group-text"> <i class="fas fa-lock"></i></span>
             </div>
-            <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1">
+            <input type="password" name="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" required>
         </div>
 
         <div class="row">

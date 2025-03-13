@@ -2,5 +2,6 @@
 PS C:\xampp\htdocs\kullaya> git status
 PS C:\xampp\htdocs\kullaya> git add .
 PS C:\xampp\htdocs\kullaya> git branch -M main
+/*git push ขึ้น githup เพราะ ว่าใช้ branch main*/
 PS C:\xampp\htdocs\kullaya> git remote add origin https://github.com/kullaya55/kly_project1.git
 PS C:\xampp\htdocs\kullaya> git push -u origin main

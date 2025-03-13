@@ -5,7 +5,7 @@
       <div class="container">
           <a class="navbar-brand" href="index.php">
               <img src="asset/images/logo-wb.svg" alt="Bootstrap" width="30" height="24">
-              Website-Demo
+              โรงเรียนเทศบาล 6 นครเชียงราย
           </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarKey" aria-controls="navbarKey" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

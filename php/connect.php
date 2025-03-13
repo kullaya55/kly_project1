@@ -12,6 +12,9 @@
         exit(); //กรณีที่เกิด error ให้ exit ออกไปเลย
     }
     $base_path_blog = 'asset/images/';
+    
+    date_default_timezone_set('Asia/Bangkok');
+
 
     /*
         *** เป็นตัวเลขของ error code 

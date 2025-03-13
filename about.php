@@ -7,6 +7,47 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="asset/css/stlye.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <style>
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: #007bff;
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .timeline-item .timeline-content {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 45%;
+        }
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+        }
+        .timeline-item .timeline-icon {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: #007bff;
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
 </head>
 <body>
     <!-- Section Navbar -->
@@ -25,15 +66,34 @@
     </header>
     <!-- End section page-title -->
 
-  
     <!-- Section  To Do-->
-     
+    <section class="container py-5">
+        <div class="row">
+            <div class="col-lg-6 py-3 ps-lg-0">
+            <h2>ทำความรู้จักกับเราให้ดียิ่งขึ้น</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel temporibus similique accusantium sunt reiciendis impedit neque accusamus id exercitationem dolore provident illo debitis porro, molestias labore veritatis beatae dolorem quaerat?</p>
+                <br>
+                <h3>เราคาดหวังไว้ว่า...</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel temporibus similique accusantium sunt reiciendis impedit neque accusamus id exercitationem dolore provident illo debitis porro, molestias labore veritatis beatae dolorem quaerat?</p>
+            </div>
+            <div class="col-lg-6">
+              <!-- การนำ video จาก youtube มาใช้งาน -->
+              <div class="ratio ratio-16x9"><!-- ratio ratio-16x9 กำหนดให้ youtube ย่อขยายตามขนาด -->
+                  <iframe class="embed-responsive-item" style="max-width: 100%;height: 100%;" src="https://www.youtube.com/embed/9r1sbAmDFcM?si=IhSWVTadHbAf" frameborder="0" allowfullscreen>
+                  </iframe>
+              </div>
+                
+            </div>
+        </div>
+    </section>
+    <!-- End Section  To Do-->
+    <!-- Section  To Do-->
     <section class="container py-5">
         <div class="row">
             <div class="col-lg-6 py-3 ps-lg-0">
                 <!-- การนำ video จาก youtube มาใช้งาน -->
                 <div class="ratio ratio-16x9"><!-- ratio ratio-16x9 กำหนดให้ youtube ย่อขยายตามขนาด -->
-                    <iframe class="embed-responsive-item" style="max-width: 100%;height: 100%;" src="https://www.youtube.com/embed/DI16PnSoS_I?si=__TDAqzVh1exo7rk" frameborder="0" allowfullscreen>
+                    <iframe class="embed-responsive-item" style="max-width: 100%;height: 100%;" src="https://www.youtube.com/embed/9r1sbAmDFcM?si=IhSWVTadHbAf" frameborder="0" allowfullscreen>
                     </iframe>
                 </div>
             </div>
@@ -50,75 +110,62 @@
 
     <!-- Section Timeline-->
     <section class="container py-3" >
-        <div class="row text-center">
-            <div class="col-12">
-                <h1 class="border-short-bottom-white ">
-                    รายละเอียด
-                </h1>
-            </div>
-            <div class="col-12">
-                <ul class="timeline">
-                    <li>
-                        <div class="timeline-badge">
-                            <p>Birth Day</p>
-                        </div>
-                        <div class="timeline-card">
-                            <h5>วันเกิดของเรา</h5>
-                            <p class="text-muted">วันที่ 5 สิงหาคม 2530</p>
-                        </div>
-                    </li>
-                    <li class="inverted">
-                        <div class="timeline-badge">
-                            <p>Birth Day</p>
-                        </div>
-                        <div class="timeline-card">
-                            <h5>วันเกิดของเรา</h5>
-                            <p class="text-muted">วันที่ 5 สิงหาคม 2530</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="timeline-badge">
-                            <p>Birth Day</p>
-                        </div>
-                        <div class="timeline-card">
-                            <h5>วันเกิดของเรา</h5>
-                            <p class="text-muted">วันที่ 5 สิงหาคม 2530</p>
-                        </div>
-                    </li>
-                    <li class="inverted">
-                        <div class="timeline-badge">
-                            <p>Birth Day</p>
-                        </div>
-                        <div class="timeline-card">
-                            <h5>วันเกิดของเรา</h5>
-                            <p class="text-muted">วันที่ 5 สิงหาคม 2530</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="timeline-badge">
-                            <p>Birth Day</p>
-                        </div>
-                        <div class="timeline-card">
-                            <h5>วันเกิดของเรา</h5>
-                            <p class="text-muted">วันที่ 5 สิงหาคม 2530</p>
-                        </div>
-                    </li>
-                    <li class="inverted">
-                        <div class="timeline-badge">
-                            <p>Birth Day</p>
-                        </div>
-                        <div class="timeline-card">
-                            <h5>วันเกิดของเรา</h5>
-                            <p class="text-muted">วันที่ 5 สิงหาคม 2530</p>
-                        </div>
-                    </li>
-                    <li class="timelin-arrow">
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </li>
-                </ul>
-            </div>
-            
-        </div>
+      <div class="container mt-1">
+          <h2 class="text-center mb-4">Timeline</h2>
+          <div class="timeline">
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 1</h5>
+                      <p>รายละเอียดของเหตุการณ์แรกที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 2</h5>
+                      <p>รายละเอียดของเหตุการณ์ที่สองที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 3</h5>
+                      <p>รายละเอียดของเหตุการณ์ที่สามที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 2</h5>
+                      <p>รายละเอียดของเหตุการณ์ที่สองที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 3</h5>
+                      <p>รายละเอียดของเหตุการณ์ที่สามที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 2</h5>
+                      <p>รายละเอียดของเหตุการณ์ที่สองที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+              <div class="timeline-item">
+                  <div class="timeline-icon"></div>
+                  <div class="timeline-content">
+                      <h5>เหตุการณ์ที่ 3</h5>
+                      <p>รายละเอียดของเหตุการณ์ที่สามที่เกิดขึ้นในไทม์ไลน์</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      
     </section>
 
     <section class="page-title jarallax position-relative py-5" data-jarallax='{"speed":0.6}'  style="background-image: url('https://plus.unsplash.com/premium_photo-1679177183775-75c2e0d0d209?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
@@ -166,8 +213,8 @@
           <a href="http://www.facebook.com" target="_blank">
             <i class="fa-brands fa-square-facebook fa-2x"></i>
           </a>
-          <a href="http:www.youtube.com target="_blank"">
-            <i class="fa-brands fa-youtube fa-2x""></i>
+          <a href="http:www.youtube.com" target="_blank">
+            <i class="fa-brands fa-youtube fa-2x"></i>
           </a>
         </div>
         <div class="col-md-4">
@@ -203,6 +250,7 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script src="node_modules/jarallax/dist/jarallax.min.js""></script>
+    <script src="node_modules/jarallax/dist/jarallax.min.js"></script>
+    
 </body>
 </html>

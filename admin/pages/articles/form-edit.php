@@ -1,13 +1,32 @@
-<?php include_once('../authen.php') ?>
+<?php 
+  include_once('../authen.php');
+  
+  // เช็คว่ามีการส่ง id และเป็นตัวเลข
+  if (!isset($_GET['id'])) {
+    header('Location:index.php');
+  }
+
+  // ใช้ Prepared Statements เพื่อป้องกัน SQL Injection
+  $sql = "SELECT * FROM `article` WHERE `id` = ?";
+  $stmt = $conn->prepare($sql);
+  $stmt->bind_param("i", $_GET['id']); // ใช้ "i" สำหรับการ binding ตัวแปรที่เป็น integer
+  $stmt->execute();
+  $result = $stmt->get_result();
+
+  if(!$result->num_rows){
+    header('Location:index.php');
+  }
+
+  $row = $result->fetch_assoc();
+  $arrTag = explode(',', $row['tag']);
+?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Articles Management</title>
-  <!-- Tell the browser to be responsive to screen width -->
+  <title>จัดการข้อมูลกิจกรรม</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="../../dist/img/favicons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="../../dist/img/favicons/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="../../dist/img/favicons/favicon-16x16.png">
@@ -17,185 +36,146 @@
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="msapplication-config" content="../../dist/img/favicons/browserconfig.xml">
   <meta name="theme-color" content="#ffffff">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css">
-  <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Select2 -->
   <link rel="stylesheet" href="../../plugins/select2/select2.min.css">
-  <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <!-- DataTables -->
   <link rel="stylesheet" href="../../plugins/datatables/dataTables.bootstrap4.min.css">
-  
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
 <body class="hold-transition sidebar-mini">
-<!-- Site wrapper -->
 <div class="wrapper">
-  <!-- Navbar & Main Sidebar Container -->
-  <?php include_once('../includes/sidebar.php') ?>
+  <?php 
+    include_once('../includes/sidebar.php');
+  ?>
 
-  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Articles Management</h1>
+            <h1>จัดการข้อมูลกิจกรรม</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="../dashboard">Home</a></li>
-              <li class="breadcrumb-item"><a href="../articles">Articles Management</a></li>
-              <li class="breadcrumb-item active">Edit Data</li>
+              <li class="breadcrumb-item"><a href="../dashboard">หน้าแรก</a></li>
+              <li class="breadcrumb-item"><a href="../articles">จัดการข้อมูลกิจกรรม</a></li>
+              <li class="breadcrumb-item active">เพิ่มข้อมูลกิจกรรม</li>
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
-    <!-- Main content -->
     <section class="content">
       <div class="card card-primary">
         <div class="card-header">
-        <h3 class="card-title">Create Data</h3>
+          <h3 class="card-title">เพิ่มข้อมูลกิจกรรม</h3>
         </div>
-        <!-- /.card-header -->
-        <!-- form start -->
-        <form role="form" action="update.php" method="post">
+        <form role="form" action="update.php" method="post" enctype="multipart/form-data">
           <div class="card-body">
 
             <div class="form-group">
-              <label for="subject">Subject</label>
-              <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
+              <label for="subject">หัวข้อ</label>
+              <input type="text" class="form-control" id="subject" name="subject" value="<?php echo htmlspecialchars($row['subject']); ?>" placeholder="เพิ่มหัวข้อกิจกรรม" required>
             </div>
 
             <div class="form-group">
-              <label for="sub_title">Sub title</label>
-              <input type="text" class="form-control" id="sub_title" name="sub_title" placeholder="Sub title">
+              <label for="sub_title">หัวข้อย่อย</label>
+              <input type="text" class="form-control" id="sub_title" name="sub_title" value="<?php echo htmlspecialchars($row['sub_title']); ?>" placeholder="เพิ่มหัวข้อย่อยกิจกรรม" required>
             </div>
 
             <div class="form-group">
-              <label>Upload Image</label>
+              <label>อัปโหลดรูปภาพกิจกรรม</label>
               <div class="custom-file">
-                  <input type="file" class="custom-file-input" name="file" id="customFile">
-                  <label class="custom-file-label" for="customFile">Choose file</label>
+                <input type="file" class="custom-file-input" name="file" id="customFile" required>
+                <label class="custom-file-label" for="customFile">เลือกไฟล์</label>
               </div>
-              <figure class="figure text-center d-none mt-2">
-                  <img id="imgUpload" class="figure-img img-fluid rounded" alt="">
+              <figure class="figure text-center d-block mt-2">
+                <input type="hidden" name="data_file" value="<?php echo $row['image']; ?>">
+                <img id="imgUpload" src="../../../asset/images/blog/<?php echo $row['image']; ?>" class="figure-img img-fluid rounded" alt="">
               </figure>
             </div>
 
             <div class="card card-primary card-outline">
               <div class="card-header">
                 <h3 class="card-title">
-                  Create Contents
+                  เพิ่มข้อมูลรายละเอียดกิจกรรม
                 </h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool btn-sm"
-                          data-widget="collapse"
-                          data-toggle="tooltip"
-                          title="Collapse">
-                    <i class="fa fa-minus"></i>
-                  </button>
-                </div>
               </div>
               <div class="card-body">
                 <div class="mb-3">
-                  <textarea id="detail" name="detail" style="width: 100%">This is my Contents </textarea>
+                  <textarea class="form-control" id="detail" name="detail" placeholder="รายละเอียด" required style="width: 100%; height: 20vh !important;"><?php echo htmlspecialchars($row['detail']); ?></textarea>
                 </div>
               </div>
             </div>
-            
+
             <div class="form-group">
-              <label>Select a Tags</label>
-              <select class="form-control select2" multiple="multiple" data-placeholder="Select a Tags" style="width: 100%;">
-                <option value="html">html</option>
-                <option value="css">css</option>
-                <option value="javascript">javascript</option>
-                <option value="php">php</option>
-                <option value="mysql">mysql</option>
+              <label for="url">เพิ่ม url Facebook ข่าวกิจกรรม</label>
+              <input type="text" class="form-control" id="url" name="url" value="<?php echo htmlspecialchars($row['url']); ?>" placeholder="เพิ่ม url Facebook ข่าวกิจกรรม" required>
+            </div>
+
+            <div class="form-group">
+              <label>เลือกหมวดหมู่</label>
+              <select class="form-control select2" name="tags[]" multiple="multiple" data-placeholder="เลือกหมวดหมู่" style="width: 100%;">
+                <option value="html" <?php echo in_array('html', $arrTag) ? 'selected' : ''; ?> >html</option>
+                <option value="css" <?php echo in_array('css', $arrTag) ? 'selected' : ''; ?>>css</option>
+                <option value="javascript" <?php echo in_array('javascript', $arrTag) ? 'selected' : ''; ?>>javascript</option>
+                <option value="php" <?php echo in_array('php', $arrTag) ? 'selected' : ''; ?>>php</option>
+                <option value="mysql" <?php echo in_array('mysql', $arrTag) ? 'selected' : ''; ?>>mysql</option>
               </select>
             </div>
 
+            <input type="checkbox" name="status" <?php echo $row['status'] == 'true' ? 'checked' : ''; ?> data-toggle="toggle" data-on="ใช้งานอยู่" data-off="ไม่ถูกใช้งาน" data-onstyle="success" data-style="ios">
+            <input type="hidden" name="id" value="<?php echo $_GET['id']; ?>" >
           </div>
           <div class="card-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" name="submit" class="btn btn-primary">เพิ่มข้อมูล</button>
           </div>
         </form>
       </div>    
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 
-  <!-- footer -->
   <?php include_once('../includes/footer.php') ?>
-  
-</div>
-<!-- ./wrapper -->
 
-<!-- jQuery -->
+</div>
+
 <script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- SlimScroll -->
 <script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
 <script src="../../plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
-<!-- DataTables -->
 <script src="https://adminlte.io/themes/AdminLTE/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="../../plugins/datatables/dataTables.bootstrap4.min.js"></script>
-<!-- CK Editor -->
-<script src="../../plugins/ckeditor/ckeditor.js"></script>
-<!-- Select2 -->
 <script src="../../plugins/select2/select2.full.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 <script>
   $(function () {
-    $('#dataTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true
+    $('.custom-file-input').on('change', function(){
+      var size = this.files[0].size / 1024 / 1024;
+      if (size.toFixed(2) > 2) {
+        alert('File too big, maximum is 2MB');
+      } else {
+        var fileName = $(this).val().split('\\').pop();
+        $(this).siblings('.custom-file-label').html(fileName);
+        if (this.files[0]) {
+          var reader = new FileReader();
+          $('.figure').addClass('d-block');
+          reader.onload = function (e) {
+            $('#imgUpload').attr('src', e.target.result);
+          }
+          reader.readAsDataURL(this.files[0]);
+        }
+      }
     });
 
-    $('.custom-file-input').on('change', function(){
-        var fileName = $(this).val().split('\\').pop()
-        $(this).siblings('.custom-file-label').html(fileName)
-        if (this.files[0]) {
-            var reader = new FileReader()
-            $('.figure').addClass('d-block')
-            reader.onload = function (e) {
-                $('#imgUpload').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(this.files[0])
-        }
-    })
-
-    ClassicEditor
-      .create(document.querySelector('#detail'))
-      .then(function (editor) {
-        // The editor instance
-      })
-      .catch(function (error) {
-        console.error(error)
-      })
-
-    //Initialize Select2 Elements
-    $('.select2').select2()
-
+    $('.select2').select2();
   });
-  
 </script>
 
 </body>

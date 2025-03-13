@@ -1,6 +1,6 @@
 <?php
   require_once('php/connect.php');
-  $sql ="SELECT * FROM article WHERE id_article='".$_GET['id_article']."' AND `status` = 'true'";
+  $sql ="SELECT * FROM article WHERE id='".$_GET['id']."' AND `status` = 'true'";
   $result = $conn->query($sql) or die($conn->error);
 
   if($result->num_rows >0){
@@ -42,7 +42,11 @@
 </head>
 <body>
     <!-- Section Navbar -->
-      <?php include_once('includes/navbar.php'); ?>
+      <?php 
+        include_once('includes/navbar.php'); 
+      // กำหนด base path ของภาพ
+   $base_path_blog = 'asset/images/blog/'; // กำหนดให้เป็นเส้นทางที่เก็บรูปภาพ
+      ?>
     <!-- End Section Navbar -->
     
     <!-- section page-title -->
@@ -65,8 +69,25 @@
             <div class="col-12">
               <hr>
               <p class="text-end text-muted">
-                <?php
-                  echo date_format(new DateTime($row['updated_at']),"j F Y");
+              <?php
+                function formatThaiDateTime($dateStr) {
+                    $thaiMonths = [
+                        1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
+                        5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
+                        9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม'
+                    ];
+
+                    $date = new DateTime($dateStr);
+                    $year = $date->format('Y') + 543; // เปลี่ยน ค.ศ. เป็น พ.ศ.
+                    $month = $thaiMonths[(int)$date->format('m')];
+                    $day = $date->format('j');
+                    $time = $date->format('H:i');
+
+                    return "{$day} {$month} {$year} เวลา {$time} น.";
+                }
+
+                // เรียกใช้งาน
+                echo formatThaiDateTime('2025-03-05 14:30:00');
                 ?>
               </p>
             </div>
@@ -78,7 +99,7 @@
                 <section class="col-12">
                   <!-- h-100 คือ การกำหนดให้ card มีขนาดเท่ากันทุก card -->
                   <div class="card h-100">
-                    <a href="blog-detail.php?id_article=<?php echo $row_RAND['id_article'];?>" class="wrapper-card-image">
+                    <a href="blog-detail.php?id=<?php echo $row_RAND['id'];?>" class="wrapper-card-image">
                       <img src="<?php echo $base_path_blog .$row_RAND['image'];?>" class="card-img-top" alt="Coding">
                     </a>
                     <div class="card-body" style="height:150px;overflow: hidden;">
@@ -86,7 +107,7 @@
                       <p class="card-text"><?php echo $row_RAND['sub_title'];?></p>
                     </div>
                     <div class="p-3">
-                      <a class="btn btn-primary w-100" href="blog-detail.php?id_article=<?php echo $row_RAND['id_article'];?>?>">อ่านเพิ่มเติม</a>
+                      <a class="btn btn-primary w-100" href="blog-detail.php?id=<?php echo $row_RAND['id'];?>?>">อ่านเพิ่มเติม</a>
                     </div>
                   </div>
                 </section>

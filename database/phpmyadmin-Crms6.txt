@@ -1,0 +1,11 @@
+phpmyadmin-Crms6
+Username : crms6
+Password : Crms6@cr2025
+
+
+Add Ftp User
+Hostname : tesaban6.ac.th
+username : kullaya@testweb.tesaban6.ac.th
+Password : 2025cr@Crms6
+port : 21
+path : /crms6
